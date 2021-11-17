@@ -30,6 +30,7 @@ numcomps=len(df.drop_duplicates(subset='company'))
 # I thought these values might be useful since Huang mentioned income vs region
 # This can be repeated with different countries
 # I saw "United Kingdonm", "Ireland", and "Russia" when I quickly looked through the list
+# Approximately 85 percent of the workers on this list are in the US
 # 
 
 USworkers=np.zeros(7,int)
