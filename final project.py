@@ -13,38 +13,29 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #%%
+
+def cleanDfLocation(row, colname):
+  place = row[colname].strip()
+  if('CA' in place or 'NV' in place or 'HI' in place): return 'West'
+  if('WA' in place or 'OR' in place or 'ID' in place or 'MT' in place or 'WY' in place or 'AK' in place): return 'Northwest'
+  if('UT' in place or 'AZ' in place or 'CO' in place or 'NM' in place or 'TX' in place or 'OK' in place): return 'Southwest'
+  if('ND' in place or 'SD' in place or 'NE' in place or 'KS' in place or 'MN' in place or 'IA' in place): return 'Midwest'
+  if('MO' in place or 'WI' in place or 'IL' in place or 'MI' in place or 'IN' in place or 'OH' in place): return 'Midwest'
+  if('KY' in place): return 'Midwest'
+  if('LA' in place or 'AR' in place or 'MS' in place or 'TN' in place or 'AL' in place or 'GA' in place): return 'Southeast'
+  if('SC' in place or 'NC' in place or 'FL' in place): return 'Southeast'
+  if('VA' in place or 'WV' in place or 'DC' in place or 'PA' in place or 'MD' in place or 'DE' in place): return 'Mid-Atlantic'
+  if('NJ' in place or 'NY' in place): return 'Mid-Atlantic'
+  if('VT' in place or 'NH' in place or 'CT' in place or 'RI' in place or 'MA' in place or 'ME' in place): return 'Northeast'
+  else: return 'International'
+  return np.nan
+
+#%%
 df = pd.read_csv("salary.csv")
-
-
 
 #%%
 
-numcomps=len(df.drop_duplicates(subset='company'))
-
-
-# %%
-
-#
-# Below is the number of workers in different regions of the US
-# 0=west, 1=northwest/Kanye's son, 2=soutwest, 3=midwest, 4=southeast, 5=mid-atlantic, 6=northeast
-# I thought these values might be useful since Huang mentioned income vs region
-# This can be repeated with different countries
-# I saw "United Kingdonm", "Ireland", and "Russia" when I quickly looked through the list
-# Approximately 85 percent of the workers on this list are in the US
-# 
-
-USworkers=np.zeros(7,int)
-
-USworkers[0]=int(df['location'].str.contains('CA|NV|HI').sum())
-USworkers[1]=int(df['location'].str.contains('WA|OR|ID|MT|WY|AK').sum())
-USworkers[2]=int(df['location'].str.contains('UT|AZ|CO|NM|TX|OK').sum())
-USworkers[3]=int(df['location'].str.contains('ND|SD|NE|KS|MN|IA|MO|WI|IL|MI|IN|OH|KY').sum())
-USworkers[4]=int(df['location'].str.contains('LA|AR|MS|TN|AL|GA|SC|NC|FL').sum())
-USworkers[5]=int(df['location'].str.contains('VA|WV|DC|PA|MD|DE|NJ|NY').sum())
-USworkers[6]=int(df['location'].str.contains('VT|NH|CT|RI|MA|ME').sum())
-
-print(sum(USworkers)/len(df))
-print(USworkers)
+df['location'] = df.apply(cleanDfLocation, colname='location', axis=1)
 
 # %%
 
