@@ -51,6 +51,23 @@ newdf = df_nona.iloc[:,[0,1,3,4,5,6,7,9,10,11,12,27,28]].copy() # pick up useful
 newdf["stock"] = 0 # creat a new column
 newdf["stock"][newdf.stockgrantvalue > 0] = 1 # person with granted stock is 1
 
+#%%
+
+# define a function to keep only year in timestamp
+def cleanDfTime(row, colname):
+  time = row[colname].strip()
+  if('2021' in time): return '2021'
+  if('2020' in time): return '2020'
+  if('2019' in time): return '2019'
+  if('2018' in time): return '2018'
+  if('2017' in time): return '2017'
+  else: return time
+  
+#%%
+newdf['year'] = newdf.apply(cleanDfTime, colname='timestamp', axis=1)
+newdf.head()
+# Only observations in 2021 and 2020 has no NA in education, race and gender, so year only has two values(2020 and 2021)
+
 # %%
 
 print("Run time:",time.perf_counter()-start)
