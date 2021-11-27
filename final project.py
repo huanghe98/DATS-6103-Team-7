@@ -37,6 +37,20 @@ df = pd.read_csv("salary.csv")
 
 df['location'] = df.apply(cleanDfLocation, colname='location', axis=1)
 
+#%%
+
+# drop NA 
+df_nona = df.dropna(subset=["Education"]) # drop NA in Education
+df_nona = df_nona.dropna(subset=["Race"]) # drop NA in race
+df_nona = df_nona.dropna(subset=["gender"]) # drop NA in gender
+
+#%%
+
+# creat a new boolean variable as dependent variable for logistic regression
+newdf = df_nona.iloc[:,[0,1,3,4,5,6,7,9,10,11,12,27,28]].copy() # pick up useful columns
+newdf["stock"] = 0 # creat a new column
+newdf["stock"][newdf.stockgrantvalue > 0] = 1 # person with granted stock is 1
+
 # %%
 
 print("Run time:",time.perf_counter()-start)
