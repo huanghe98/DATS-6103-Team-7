@@ -68,6 +68,15 @@ newdf['year'] = newdf.apply(cleanDfTime, colname='timestamp', axis=1)
 newdf.head()
 # Only observations in 2021 and 2020 has no NA in education, race and gender, so year only has two values(2020 and 2021)
 
+#%%
+
+# quickly check the simple model for total sallary
+from statsmodels.formula.api import ols
+
+linearmodel1 = ols(formula='totalyearlycompensation ~ yearsofexperience + yearsatcompany + C(gender) + C(Race) + C(Education) + C(year)', data = newdf)
+linearmodel1_fit = linearmodel1.fit()
+print(linearmodel1_fit.summary())
+
 # %%
 
 print("Run time:",time.perf_counter()-start)
