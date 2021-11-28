@@ -77,6 +77,16 @@ linearmodel1 = ols(formula='totalyearlycompensation ~ yearsofexperience + yearsa
 linearmodel1_fit = linearmodel1.fit()
 print(linearmodel1_fit.summary())
 
+#%%
+
+# quickly check the simple model for stock
+import statsmodels.api as sm
+from statsmodels.formula.api import glm
+
+glm1 = glm(formula='stock ~ totalyearlycompensation +yearsofexperience + yearsatcompany + C(gender) + C(Race) + C(Education) + C(year) ', data=newdf, family=sm.families.Binomial())
+glm1fit = glm1.fit()
+print(glm1fit.summary())
+
 # %%
 
 print("Run time:",time.perf_counter()-start)
