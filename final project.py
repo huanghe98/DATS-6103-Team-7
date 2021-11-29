@@ -203,6 +203,21 @@ def scorestable(cut_offs):
 cut_offs = [0.3,0.35,0.4,0.45,0.5]
 scorestable(cut_offs)
 
+#%% draw for different cut-offs
+cutofftable = scorestable(cut_offs)
+fig=plt.figure()
+ax=fig.add_subplot(1,1,1)
+ax.plot(cutofftable.cut_offs,cutofftable.accuracy,label="Accuracy")
+ax.plot(cutofftable.cut_offs,cutofftable.precision,label="Precision")
+ax.plot(cutofftable.cut_offs,cutofftable.recall_rate,label="Recall_rate")
+ax.plot(cutofftable.cut_offs,cutofftable.F1_score,label="F1-score")
+ax.legend(loc='best')
+ax.set_xlabel("cut-off")
+ax.set_ylabel("score")
+ax.set_ylim(0.5,1.05)
+ax.set_title("classification report for different cut-offs")
+plt.show()
+
 #%% classifiers
 
 # First, spilt total data set to train and test set
