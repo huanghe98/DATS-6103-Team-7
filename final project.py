@@ -62,8 +62,6 @@ df = pd.read_csv("salary.csv")
 df['location'] = df.apply(cleanDfLocation, colname='location', axis=1)
 posarray=df['title'].unique()
 df['title'] = df.apply(cleanDfTitle, colname='title',posarray=posarray, axis=1)
-df['company']
-df['stockgrantvalue']=df.apply(cleanDfStock, colname='stockgrantvalue', axis=1)
 df['company']=df.apply(cleanDfCompany,colname='company',axis=1)
 
 #%%
