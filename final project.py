@@ -120,14 +120,14 @@ print(linearmodel1_fit.summary())
 import statsmodels.api as sm
 from statsmodels.formula.api import glm
 
-glm1 = glm(formula='stock ~ totalyearlycompensation +yearsofexperience + yearsatcompany + C(gender) + C(Race) + C(Education) + C(year) +C(location)', data=newdf, family=sm.families.Binomial())
+glm1 = glm(formula='stock ~ totalyearlycompensation +yearsofexperience + yearsatcompany + C(gender) + C(Race) + C(Education) + C(year) +C(location)+C(title)', data=newdf, family=sm.families.Binomial())
 glm1fit = glm1.fit()
 print(glm1fit.summary())
 
 #%%
 
 # build a new model with all significant variables
-glm2 = glm(formula='stock ~ totalyearlycompensation +yearsofexperience + yearsatcompany + C(Race) + C(Education)+ C(year) ', data=newdf, family=sm.families.Binomial())
+glm2 = glm(formula='stock ~ totalyearlycompensation +yearsofexperience + yearsatcompany + C(Race) + C(Education)+ C(year) +C(title) ', data=newdf, family=sm.families.Binomial())
 glm2fit = glm2.fit()
 print(glm2fit.summary())
 
@@ -142,14 +142,66 @@ margins = True))
 
 # Predicted     0      1    All
 # Actual                       
-# 0          2959   3372   6331
-# 1          1725  13535  15260
-# All        4684  16907  21591
+# 0          3014   3317   6331
+# 1          1769  13491  15260
+# All        4783  16808  21591
 
-print("The total accuaracy of 0.5 cut-off model is",(2959+13535)/21591)
-print("The precision 0.5 cut-off model is",13535/16907)
-print("The recall rate 0.5 cut-off model is",13535/15260)
 
+
+#%%
+
+# define a function to calcute accuracy, precision...
+def confusionmatrix(cut_off):
+  table = pd.crosstab(newdf.stock, np.where(modelprediction['prb'] > cut_off, 1, 0),rownames=['Actual'], colnames=['Predicted'],margins = True)
+  TN = table.iloc[0,0]
+  FP = table.iloc[0,1]
+  FN = table.iloc[1,0]
+  TP = table.iloc[1,1]
+  accuracy = round((TP + TN) / table.iloc[2,2],4)
+  precision = round(TP / (TP + FP),4)
+  recall_rate = round(TP / (TP + FN),4)
+  F1_score = round(2*TP/(2*TP + FP +FN),4)
+  # print(table)
+  # print("The total accuaracy of",cut_off,"cut-off model is",accuracy)
+  # print("The precision of",cut_off,"cut-off model is",precision)
+  # print("The recall rate of",cut_off,"cut-off model is",recall_rate)
+  # print("The F1 score of",cut_off,"cut-off model is",F1_score)
+  return table,accuracy,precision,recall_rate,F1_score
+
+#%%
+# define a function to show confusion matrix and accuracy...
+def printconfusionmatrix(cut_off):
+  newscore = confusionmatrix(cut_off)
+  print('The confusion matrix:\n',newscore[0])
+  print("The total accuaracy of",cut_off,"cut-off model is",newscore[1])
+  print("The precision of",cut_off,"cut-off model is",newscore[2])
+  print("The recall rate of",cut_off,"cut-off model is",newscore[3])
+  print("The F1 score of",cut_off,"cut-off model is",newscore[4])
+  return
+
+#%%
+printconfusionmatrix(0.5)
+
+#%%
+
+# define a function to show accuracy for different cut-offs
+def scorestable(cut_offs):
+  accuaracylist = []
+  precisionlist = []
+  recall_ratelist = []
+  F1_scorelist = []
+  for cut_off in cut_offs:
+    newscores = confusionmatrix(cut_off)
+    accuaracylist.append(newscores[1])
+    precisionlist.append(newscores[2])
+    recall_ratelist.append(newscores[3])
+    F1_scorelist.append(newscores[4])
+  scotable = pd.DataFrame({'cut_offs':cut_offs,'accuracy':accuaracylist,'precision':precisionlist,'recall_rate':recall_ratelist,'F1_score':F1_scorelist})
+  return scotable
+    
+#%%
+cut_offs = [0.3,0.35,0.4,0.45,0.5]
+scorestable(cut_offs)
 
 #%% classifiers
 
