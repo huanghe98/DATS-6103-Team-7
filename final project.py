@@ -30,12 +30,41 @@ def cleanDfLocation(row, colname):
   else: return 'International'
   return np.nan
 
+def cleanDfTitle(row,colname,posarray):
+  pos=row[colname].strip()
+  if('Manager' in pos): return 'Manager'
+  if(pos==posarray[1] or pos==posarray[10] or pos==posarray[13]): return 'Engineer'
+  if(pos==posarray[3] or pos==posarray[4] or pos==posarray[9]): return 'Analyst'
+  if(pos==posarray[7] or pos==posarray[8] or pos==posarray[11]): return 'Sales'
+  else: return 'Other'
+  return np.nan
+
+def cleanDfCompany(row,colname):
+  comp=str(row[colname]).strip().lower()
+  if('goog' in comp): return 'google'
+  if('amzn' in comp or 'amazon' in comp): return 'amazon'
+  if('microsoft' in comp or 'msft' in comp): return 'microsoft'
+  if('facebook' in comp or 'fb' in comp): return 'facebook'
+  if('appl' in comp): return 'apple'
+  if('oracle' in comp or 'orcl' in comp): return 'oracle'
+  if('salesforce' in comp or 'crm' in comp): return 'salesforce'
+  if('intel' in comp or 'intc' in comp): return 'intel'
+  if('cisco' in comp or 'csco' in comp): return 'cisco'
+  if('ibm' in comp): return 'ibm'
+  #else: return 'other'
+  return np.nan
+
 #%%
 df = pd.read_csv("salary.csv")
 
 #%%
 
 df['location'] = df.apply(cleanDfLocation, colname='location', axis=1)
+posarray=df['title'].unique()
+df['title'] = df.apply(cleanDfTitle, colname='title',posarray=posarray, axis=1)
+df['company']
+df['stockgrantvalue']=df.apply(cleanDfStock, colname='stockgrantvalue', axis=1)
+df['company']=df.apply(cleanDfCompany,colname='company',axis=1)
 
 #%%
 
@@ -200,3 +229,7 @@ print(classification_report(y_test, y_test_pred))
 # %%
 
 print("Run time:",time.perf_counter()-start)
+
+# %%
+
+# %%
