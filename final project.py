@@ -248,6 +248,31 @@ print(f'KNN test score:  {knn.score(X_test,y_test)}')
 print(confusion_matrix(y_test, knn.predict(X_test)))
 print(classification_report(y_test, knn.predict(X_test)))
 
+#%% use different n-neighbors to KNN 
+
+# First calculate the training score and testing score
+Klist = []
+KNNtrainscore = []
+KNNtextscore = []
+for i in range(13):
+  k = 2*i + 1
+  Klist.append(k)
+  knn = KNeighborsClassifier(n_neighbors=k)
+  knn.fit(X_train,y_train)
+  KNNtrainscore.append(round(knn.score(X_train,y_train),5))
+  KNNtextscore.append(round(knn.score(X_test,y_test),5))
+
+# Then draw the plot
+fig=plt.figure()
+ax=fig.add_subplot(1,1,1)
+ax.plot(Klist,KNNtrainscore,label="training score")
+ax.plot(Klist,KNNtextscore,label="testing score")
+ax.legend(loc='best')
+ax.set_xlabel("K")
+ax.set_ylabel("score")
+ax.set_ylim(0,1.05)
+ax.set_title("KNeighborsClassifier")
+plt.show()
 
 #%% DecisionTreeClassifier()
 dtree = DecisionTreeClassifier(max_depth=5, random_state=1)
