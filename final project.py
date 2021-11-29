@@ -232,14 +232,6 @@ print(f'svc test score:  {svc.score(X_test,y_test)}')
 print(confusion_matrix(y_test, svc.predict(X_test)))
 print(classification_report(y_test, svc.predict(X_test)))
 
-#%% SVC(kernel="linear")
-svc_lr = SVC(kernel="linear")
-svc_lr.fit(X_train,y_train)
-print(f'svc(kernel="linear") train score:  {svc_lr.score(X_train,y_train)}')
-print(f'svc(kernel="linear") test score:  {svc_lr.score(X_test,y_test)}')
-print(confusion_matrix(y_test, svc_lr.predict(X_test)))
-print(classification_report(y_test, svc_lr.predict(X_test)))
-
 #%% LinearSVC()
 linearSVC = LinearSVC()
 linearSVC.fit(X_train,y_train)
@@ -247,14 +239,6 @@ print(f'svc(kernel="linear") train score:  {linearSVC.score(X_train,y_train)}')
 print(f'svc(kernel="linear") test score:  {linearSVC.score(X_test,y_test)}')
 print(confusion_matrix(y_test, linearSVC.predict(X_test)))
 print(classification_report(y_test, linearSVC.predict(X_test)))
-
-#%% LogisticRegression()
-logreg = LogisticRegression()
-logreg.fit(X_train,y_train)
-print(f'lr train score:  {logreg.score(X_train,y_train)}')
-print(f'lr test score:  {logreg.score(X_test,y_test)}')
-print(confusion_matrix(y_test, logreg.predict(X_test)))
-print(classification_report(y_test, logreg.predict(X_test)))
 
 #%% KNN
 knn = KNeighborsClassifier(n_neighbors=5)
@@ -276,6 +260,34 @@ print(accuracy_score(y_test, y_test_pred))
 print(confusion_matrix(y_test, y_test_pred))
 print(classification_report(y_test, y_test_pred))
 
+#%% ROC AUC
+from sklearn.metrics import roc_auc_score, roc_curve
+logreg = LogisticRegression()
+logreg.fit(X_train,y_train)
+
+# generate a no skill prediction (majority class)
+ns_probs = [0 for _ in range(len(y_test))]
+# predict probabilities
+lr_probs = logreg.predict_proba(X_test)
+# keep probabilities for the positive outcome only
+lr_probs = lr_probs[:, 1]
+# calculate scores
+ns_auc = roc_auc_score(y_test, ns_probs)
+lr_auc = roc_auc_score(y_test, lr_probs)
+# summarize scores
+print('No Skill: ROC AUC=%.3f' % (ns_auc))
+print('Logistic: ROC AUC=%.3f' % (lr_auc)) 
+# calculate roc curves
+ns_fpr, ns_tpr, _ = roc_curve(y_test, ns_probs)
+lr_fpr, lr_tpr, _ = roc_curve(y_test, lr_probs)
+# plot the roc curve for the model
+plt.plot(ns_fpr, ns_tpr, linestyle='--', label='No Skill')
+plt.plot(lr_fpr, lr_tpr, marker='.', label='Logistic')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.legend()
+# show the plot
+plt.show()
 # %%
 
 print("Run time:",time.perf_counter()-start)
