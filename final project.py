@@ -291,6 +291,8 @@ ax.set_ylim(0.5,1.05)
 ax.set_title("classification report for different cut-offs")
 plt.show()
 
+# The best cut-off point is around 0.58
+
 #%% classifiers
 
 # First, spilt total data set to train and test set
@@ -401,6 +403,22 @@ plt.ylabel('True Positive Rate')
 plt.legend()
 # show the plot
 plt.show()
+
+#%%[markdown]
+# To sum up, after checking the logistic regression model, KNN models, SVC model, SVC with linear kernel model, and decision tree model, we compared their performance and time cost. The best prediction method in these methods is KNN model, and the appropriate range of K value is between 9 and 15. In this range, the total accuracy of KNN models is around 0.78 and takes less time.
+
+#%%[markdown]
+## Conclusion
+# In this project, we focused on our SMART questions and found some interesting inspirations for data scientists.
+#
+# We found the top 5 companies with best average salaries, which includes Netflix, Snap, Stripe, Lyft, Pinterest. Also, we found the top 5 cities with the best average salaries, which includes Los Gatos, Menlo Park, Mountain View, Cupertino, and Kirkland. So, if data scientists want to get a higher salary, these companies and cities are the best choice.
+#
+# For the first SMART question about what factors affect the salary level of data scientists, we found some related variables. An additional year of experience increased the base salary by around 4,281 dollars; years at the company actually had a negative impact on salary (although minimal); education seemed to have the biggest impact on base salary and master’s degree increased the base salary by around 14,528 dollars.
+#
+# For the second SMART question on how to predict who was granted stocks, we found that years at company and years of experience all have a negative impact on stock. And when it comes to prediction, KNN model is the best method for this data set and the appropriate K values range from 9 to 15.
+#
+# However, overall, our current research is not deep enough. For follow-up research, maybe we can use the PCA method to help us determine the importance of variables and reduce the number of variables in the linear regression model. We also can try different calculation methods in each classifier model.
+
 
 # %%
 
