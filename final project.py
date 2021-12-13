@@ -67,9 +67,9 @@ df['company']=df.apply(cleanDfCompany,colname='company',axis=1)
 #%%
 
 # drop NA 
-df_nona = df.dropna(subset=["Education"]) # drop NA in Education
-df_nona = df_nona.dropna(subset=["Race"]) # drop NA in race
-df_nona = df_nona.dropna(subset=["gender"]) # drop NA in gender
+df_nona = df.dropna(subset=["Education"]) # drop NAs in Education
+df_nona = df_nona.dropna(subset=["Race"]) # drop NAs in race
+df_nona = df_nona.dropna(subset=["gender"]) # drop NAs in gender
 
 #%%
 
