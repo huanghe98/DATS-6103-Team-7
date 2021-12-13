@@ -187,6 +187,11 @@ print(linearmodel1_fit.summary())
 #%%[markdown]
 ## PART 3. model building and evolution for stock
 
+# Stocks and stock options are a common and effective method for companies to attract employees and reduce employee turnover. For technical talents such as data scientists, companies are very willing to grant employees stocks to ensure their technological advantages. Most data scientists also are willing to get stocks.
+#
+# So, in this section, we want to find what factors affect whether data scientists will get stocks or stock options and use KNN model and other classifier models to help data scientists predict whether they can get stocks.
+
+
 #%% model building and evolution for stock
 
 # quickly check the simple model for stock
