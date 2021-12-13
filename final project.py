@@ -51,7 +51,7 @@ def cleanDfCompany(row,colname):
   if('intel' in comp or 'intc' in comp): return 'intel'
   if('cisco' in comp or 'csco' in comp): return 'cisco'
   if('ibm' in comp): return 'ibm'
-  #else: return 'other'
+  else: return comp
   return np.nan
 
 #%%
@@ -97,6 +97,79 @@ newdf.head()
 
 #%%[markdown]
 ## PART 1. introduction and EDA
+
+labels=['Manager','Engineer','Analyst','Sales','Other']
+sizes=[len(df.loc[df.iloc[:,3]=='Manager']),len(df.loc[df.iloc[:,3]=='Engineer']),len(df.loc[df.iloc[:,3]=='Analyst']),len(df.loc[df.iloc[:,3]=='Sales']),len(df.loc[df.iloc[:,3]=='Other'])]
+explode=[0.1,0,0,0,0]
+
+fig1,ax1=plt.subplots()
+ax1.pie(sizes,explode=explode,labels=labels,autopct='%.0f%%',startangle=360)
+ax1.axis('equal')
+plt.title('Distribution of Positions')
+
+plt.show()
+
+#%%
+
+labels2=['West','Northwest','Southwest','Midwest','Southeast','Mid-Atlantic','Northeast','International']
+sizes2=[len(df.loc[df.iloc[:,5]==labels2[0]]),len(df.loc[df.iloc[:,5]==labels2[1]]),len(df.loc[df.iloc[:,5]==labels2[2]]),len(df.loc[df.iloc[:,5]==labels2[3]]),len(df.loc[df.iloc[:,5]==labels2[4]]),len(df.loc[df.iloc[:,5]==labels2[5]]),len(df.loc[df.iloc[:,5]==labels2[6]]),len(df.loc[df.iloc[:,5]==labels2[7]])]
+explode2=[0,0,0,0,0,0,0,0.1]
+
+fig2,ax2=plt.subplots()
+ax2.pie(sizes2,explode=explode2,labels=labels2,autopct='%.0f%%',startangle=90)
+ax2.axis('equal')
+plt.title('Distribution of Locations')
+
+plt.show()
+
+#%%
+
+p=sns.boxplot(x="stockgrantvalue", y="totalyearlycompensation", data=df, showfliers=False)
+p.set_xlabel('Stocks Granted',fontsize=16)
+p.set_ylabel("Total Yearly Compensation",fontsize=16)
+p.set_title('Income for Those Receiving and Not Receiving Stocks',fontsize=16)
+
+#%%
+
+titlar=['Manager','Sales','Engineer','Analyst','Other']
+df2=df
+df2['title']=pd.Categorical(df2['title'],titlar)
+
+q=sns.boxplot(x="title", y="totalyearlycompensation", data=df2, showfliers=False)
+q.set_xlabel('Position',fontsize=16)
+q.set_ylabel("Total Yearly Compensation",fontsize=16)
+q.set_title('Income for Different Positions',fontsize=16)
+
+#%%
+
+meanMan=df.loc[df.iloc[:,3]=='Manager']['totalyearlycompensation'].mean()
+meanSal=df.loc[df.iloc[:,3]=='Sales']['totalyearlycompensation'].mean()
+meanEng=df.loc[df.iloc[:,3]=='Engineer']['totalyearlycompensation'].mean()
+meanAna=df.loc[df.iloc[:,3]=='Analyst']['totalyearlycompensation'].mean()
+meanOth=df.loc[df.iloc[:,3]=='Other']['totalyearlycompensation'].mean()
+
+#%%
+
+meanWes=df.loc[df.iloc[:,5]=='West']['totalyearlycompensation'].mean()
+meanNW=df.loc[df.iloc[:,5]=='Northwest']['totalyearlycompensation'].mean()
+meanMid=df.loc[df.iloc[:,5]=='Mid-Atlantic']['totalyearlycompensation'].mean()
+meanNE=df.loc[df.iloc[:,5]=='Northeast']['totalyearlycompensation'].mean()
+meanSW=df.loc[df.iloc[:,5]=='Southwest']['totalyearlycompensation'].mean()
+meanMW=df.loc[df.iloc[:,5]=='Midwest']['totalyearlycompensation'].mean()
+meanSE=df.loc[df.iloc[:,5]=='Southeast']['totalyearlycompensation'].mean()
+meanInt=df.loc[df.iloc[:,5]=='International']['totalyearlycompensation'].mean()
+
+#%%
+
+locar=['West','Northwest','Mid-Atlantic','Northeast','Southwest','Midwest','Southeast','International']
+df3=df
+df3['location']=pd.Categorical(df3['location'],locar)
+
+r=sns.boxplot(x="location", y="totalyearlycompensation", data=df3, showfliers=False)
+r.set_xlabel('Location',fontsize=16)
+r.set_ylabel("Total Yearly Compensation",fontsize=16)
+r.set_title('Income for Different Regions',fontsize=16)
+plt.xticks(rotation=90)
 
 #%%[markdown]
 ## PART 2. model building and evolution for total sallary
