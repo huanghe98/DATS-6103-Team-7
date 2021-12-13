@@ -404,6 +404,8 @@ plt.legend()
 # show the plot
 plt.show()
 
+# The AUC value is 0.808, which means logistic model is a good prediction model.
+
 #%%[markdown]
 # To sum up, after checking the logistic regression model, KNN models, SVC model, SVC with linear kernel model, and decision tree model, we compared their performance and time cost. The best prediction method in these methods is KNN model, and the appropriate range of K value is between 9 and 15. In this range, the total accuracy of KNN models is around 0.78 and takes less time.
 
